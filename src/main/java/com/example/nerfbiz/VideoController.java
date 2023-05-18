@@ -54,10 +54,10 @@ public class VideoController {
             String safeFile =System.currentTimeMillis()+"";
             FileNames = FileNames+","+safeFile;
             try {
-                String pathname = filepath+safeFile;
-                File f1 = new File(pathname);
-                mf.transferTo(f1);
-                System.out.println("f1.getAbsolutePath:"+f1.getAbsolutePath());
+                //String pathname = filepath+safeFile;
+                //File f1 = new File(pathname);
+                //mf.transferTo(f1);
+                //System.out.println("f1.getAbsolutePath:"+f1.getAbsolutePath());
 
                 //credential 객체 생성
                 System.out.println("credential 객체 생성");
@@ -67,9 +67,9 @@ public class VideoController {
                 //storage 객체 생성
                 System.out.println("storage 객체 생성");
                 Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
-                Path path = Paths.get(f1.getAbsolutePath());
-                byte[] content = Files.readAllBytes(path);
-                //byte[] content = ByteStreams.toByteArray(mf.getInputStream());
+                //Path path = Paths.get(f1.getAbsolutePath());
+                //byte[] content = Files.readAllBytes(path);
+                byte[] content = mf.getBytes();
 
                 //cloud에 영상 전송
                 System.out.println("cloud에 영상 전송");
