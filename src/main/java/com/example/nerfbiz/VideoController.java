@@ -69,7 +69,7 @@ public class VideoController {
                 Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
                 //Path path = Paths.get(f1.getAbsolutePath());
                 //byte[] content = Files.readAllBytes(path);
-                byte[] content = ByteStreams.toByteArray(new FileInputStream(f1));
+                byte[] content = ByteStreams.toByteArray(mf.getInputStream());
 
                 //cloud에 영상 전송
                 System.out.println("cloud에 영상 전송");
