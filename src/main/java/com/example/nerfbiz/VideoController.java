@@ -40,7 +40,7 @@ public class VideoController {
                                              @RequestParam(value="file", required=false) MultipartFile[] files) throws SQLException {
         Map<String,Object> resultMap = new HashMap<String,Object>();
 
-        String filepath = "";
+        String filepath = "/videos/";
         String FileNames ="";
         System.out.println("paramMap =>"+files[0]);
 
@@ -67,9 +67,9 @@ public class VideoController {
                 //storage 객체 생성
                 System.out.println("storage 객체 생성");
                 Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
-                //Path path = Paths.get(f1.getAbsolutePath());
-                //byte[] content = Files.readAllBytes(path);
-                byte[] content = ByteStreams.toByteArray(mf.getInputStream());
+                Path path = Paths.get(f1.getAbsolutePath());
+                byte[] content = Files.readAllBytes(path);
+                //byte[] content = ByteStreams.toByteArray(mf.getInputStream());
 
                 //cloud에 영상 전송
                 System.out.println("cloud에 영상 전송");
