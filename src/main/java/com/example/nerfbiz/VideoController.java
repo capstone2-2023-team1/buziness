@@ -50,7 +50,7 @@ public class VideoController {
             long fileSize = mf.getSize(); // 파일 사이즈
             System.out.println("originFileName : " + originFileName);
             System.out.println("fileSize : " + fileSize);
-            String safeFile =System.currentTimeMillis()+".mp4";
+            String safeFile =System.currentTimeMillis()+"";
             FileNames = FileNames+","+safeFile;
             try {
                 String pathname = filepath+safeFile;
