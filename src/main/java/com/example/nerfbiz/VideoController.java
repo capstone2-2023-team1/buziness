@@ -58,20 +58,24 @@ public class VideoController {
                 mf.transferTo(f1);
 
                 //credential 객체 생성
+                System.out.println("credential 객체 생성");
                 String credentialsPath = Constant.FILE_PATH_RESOURCES+"protean-pager-386913-984d487862d2.json";
                 GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(credentialsPath));
 
                 //storage 객체 생성
+                System.out.println("storage 객체 생성");
                 Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
                 Path path = Paths.get(pathname);
                 byte[] content = Files.readAllBytes(path);
 
                 //cloud에 영상 전송
+                System.out.println("cloud에 영상 전송");
                 BlobId blobId = BlobId.of("nerf-video", "videos/"+safeFile);
                 BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("video/mp4").build();
                 storage.create(blobInfo, content);
 
                 //NeRF-server에 작업 요청
+                System.out.println("NeRF-server에 작업 요청");
                 RestTemplate restTemplate = new RestTemplate();
                 String apiUrl = Constant.FUNCTIONAL_SERVER_PATH_VIDEO2TRD+"?video=https://storage.googleapis.com/nerf-video/videos/"+safeFile+"&identifier="+safeFile+"&mask_id=book";
                 HttpHeaders headers = new HttpHeaders();
