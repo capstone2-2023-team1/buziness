@@ -72,7 +72,7 @@ public class VideoController {
 
                 //NeRF-server에 작업 요청
                 RestTemplate restTemplate = new RestTemplate();
-                String apiUrl = Constant.FUNCTIONAL_SERVER_PATH_VIDEO2TRD+"?video=https://storage.googleapis.com/nerf-video/videos/"+safeFile+"&identifier="+safeFile;
+                String apiUrl = Constant.FUNCTIONAL_SERVER_PATH_VIDEO2TRD+"?video=https://storage.googleapis.com/nerf-video/videos/"+safeFile+"&identifier="+safeFile+"&mask_id=book";
                 HttpHeaders headers = new HttpHeaders();
                 String requestBody = "{\"video\": \"https://storage.googleapis.com/nerf-video/"+safeFile+"\", \"identifier\": \""+safeFile+"\"}"; //영상주소 전달
                 HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
