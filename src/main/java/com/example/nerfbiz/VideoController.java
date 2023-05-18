@@ -5,6 +5,7 @@ import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.tomcat.util.bcel.Const;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -79,6 +80,7 @@ public class VideoController {
                 ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.GET, requestEntity, String.class);
                 String responseBody = response.getBody();
                 System.out.println(responseBody);
+                resultMap.put("obj_url", Constant.RENDERING_SERVER_PATH+"?url="+responseBody);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -94,7 +96,6 @@ public class VideoController {
 
         System.out.println("FileNames =>"+ FileNames);
         resultMap.put("JavaData", paramMap);
-        resultMap.put("obj_url", "https://storage.googleapis.com/nerf-video/obj/mesh.obj");
         return resultMap;
     }
 
