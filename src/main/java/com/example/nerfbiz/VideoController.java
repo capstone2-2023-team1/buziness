@@ -4,6 +4,7 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
+import com.google.common.io.ByteStreams;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.tomcat.util.bcel.Const;
@@ -66,8 +67,9 @@ public class VideoController {
                 //storage 객체 생성
                 System.out.println("storage 객체 생성");
                 Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
-                Path path = Paths.get(f1.getAbsolutePath());
-                byte[] content = Files.readAllBytes(path);
+                //Path path = Paths.get(f1.getAbsolutePath());
+                //byte[] content = Files.readAllBytes(path);
+                byte[] content = ByteStreams.toByteArray(new FileInputStream(f1));
 
                 //cloud에 영상 전송
                 System.out.println("cloud에 영상 전송");
