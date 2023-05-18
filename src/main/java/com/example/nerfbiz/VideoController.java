@@ -48,7 +48,7 @@ public class VideoController {
             System.out.println("originFileName : " + originFileName);
             System.out.println("fileSize : " + fileSize);
 
-            String safeFile =System.currentTimeMillis()+"";
+            String safeFile =System.currentTimeMillis()+".mp4";
 
             FileNames = FileNames+","+safeFile;
             try {

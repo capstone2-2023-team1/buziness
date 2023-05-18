@@ -3,7 +3,7 @@ package com.example.nerfbiz;
 public interface Constant {
 
     String FILE_PATH_RESOURCES = "~/NeRF-biz/resources/";
-    String FILE_PATH = FILE_PATH_RESOURCES+"videos/";
+    String FILE_PATH = "";
     String FRONT_SERVER_PATH = "";
     String FUNCTIONAL_SERVER_PATH = "https://34.68.148.59:8000/";
     String FUNCTIONAL_SERVER_PATH_VIDEO2TRD = FUNCTIONAL_SERVER_PATH+"trans/";
