@@ -5,7 +5,9 @@ import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import jakarta.servlet.http.HttpServletRequest;
+
 import org.apache.tomcat.util.bcel.Const;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -32,14 +34,17 @@ import java.util.Map;
 @RestController
 public class VideoController {
 
+    @Value("${file.upload-dir}")
+    String filepath;
+
     @RequestMapping(value="video", method= RequestMethod.POST)
     public Map<String,Object> videoUpload (HttpServletRequest request,
                                              @RequestParam(value="file", required=false) MultipartFile[] files) throws SQLException {
         Map<String,Object> resultMap = new HashMap<String,Object>();
+
         String FileNames ="";
         System.out.println("paramMap =>"+files[0]);
 
-        String filepath = Constant.FILE_PATH;
         System.out.println(filepath);
         for (MultipartFile mf : files) {
 
@@ -47,12 +52,9 @@ public class VideoController {
             long fileSize = mf.getSize(); // 파일 사이즈
             System.out.println("originFileName : " + originFileName);
             System.out.println("fileSize : " + fileSize);
-
             String safeFile =System.currentTimeMillis()+".mp4";
-
             FileNames = FileNames+","+safeFile;
             try {
-
                 String pathname = filepath+safeFile;
                 File f1 = new File(pathname);
                 mf.transferTo(f1);
@@ -85,7 +87,6 @@ public class VideoController {
                 String responseBody = response.getBody();
                 System.out.println(responseBody);
                 resultMap.put("obj_url", Constant.RENDERING_SERVER_PATH+"?url="+responseBody);
-
             } catch (IOException e) {
                 e.printStackTrace();
 
