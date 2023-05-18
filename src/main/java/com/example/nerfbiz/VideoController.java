@@ -34,14 +34,12 @@ import java.util.Map;
 @RestController
 public class VideoController {
 
-    @Value("${file.upload-dir}")
-    String filepath;
-
     @RequestMapping(value="video", method= RequestMethod.POST)
     public Map<String,Object> videoUpload (HttpServletRequest request,
                                              @RequestParam(value="file", required=false) MultipartFile[] files) throws SQLException {
         Map<String,Object> resultMap = new HashMap<String,Object>();
 
+        String filepath = "";
         String FileNames ="";
         System.out.println("paramMap =>"+files[0]);
 
@@ -58,6 +56,7 @@ public class VideoController {
                 String pathname = filepath+safeFile;
                 File f1 = new File(pathname);
                 mf.transferTo(f1);
+                System.out.println("f1.getAbsolutePath:"+f1.getAbsolutePath());
 
                 //credential 객체 생성
                 System.out.println("credential 객체 생성");
@@ -67,7 +66,7 @@ public class VideoController {
                 //storage 객체 생성
                 System.out.println("storage 객체 생성");
                 Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
-                Path path = Paths.get(pathname);
+                Path path = Paths.get(f1.getAbsolutePath());
                 byte[] content = Files.readAllBytes(path);
 
                 //cloud에 영상 전송
