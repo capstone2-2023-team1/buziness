@@ -1,0 +1,77 @@
+package com.example.nerfbiz.src.convert;
+
+import com.example.nerfbiz.config.BaseException;
+import com.example.nerfbiz.config.Constant;
+import com.example.nerfbiz.src.convert.model.PostConvertReq;
+import com.example.nerfbiz.src.convert.model.PostConvertRes;
+import com.example.nerfbiz.src.convert.model.Target;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.storage.BlobId;
+import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.FileInputStream;
+
+import static com.example.nerfbiz.config.BaseResponseStatus.*;
+import static com.example.nerfbiz.config.Constant.*;
+
+@Service
+public class ConvertService {
+
+    final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    private final ConvertDao convertDao;
+    private final ConvertProvider convertProvider;
+
+    public ConvertService(ConvertDao convertDao, ConvertProvider convertProvider){
+        this.convertDao = convertDao;
+        this.convertProvider = convertProvider;
+    }
+
+    public void uploadVideo(String objectID, MultipartFile multipartFile) throws BaseException {
+
+        try {
+            //credential 객체 생성
+            String credentialsPath = FILE_PATH_RESOURCES + GCS_KEY_JSON;
+            GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(credentialsPath));
+
+            //storage 객체 생성
+            Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
+            byte[] content = multipartFile.getBytes();
+
+            //cloud에 영상 전송
+            BlobId blobId = BlobId.of(BUCKET_NAME, BUCKET_VIDEO_DIR+"/"+objectID);
+            BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("video/mp4").build();
+            storage.create(blobInfo, content);
+
+
+        }catch (Exception exception){
+            throw new BaseException(VIDEO_UPLOAD_ERROR);
+        }
+
+    }
+
+    public PostConvertRes convert(PostConvertReq postConvertReq, String objectID) throws BaseException {
+
+        RestTemplate restTemplate = new RestTemplate();
+        String apiUrl = Constant.FUNCTIONAL_SERVER_PATH_VIDEO2TRD + "?video=https://storage.googleapis.com/nerf-video/videos/" + objectID + "&identifier=" + objectID + "&mask_id="+postConvertReq.getCategory();
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<String> requestEntity = new HttpEntity<>(null, headers);
+        ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.GET, requestEntity, String.class);
+        if(response.getStatusCode().isError()) throw new BaseException(VIDEO_CONVERT_ERROR);
+        //String responseBody = response.getBody();
+        //resultMap.put("obj_url", Constant.RENDERING_SERVER_PATH + "?url=" + responseBody);
+        return new PostConvertRes();
+    }
+
+}

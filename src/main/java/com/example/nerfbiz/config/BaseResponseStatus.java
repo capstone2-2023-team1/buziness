@@ -39,8 +39,11 @@ public enum BaseResponseStatus {
     MODIFY_FAIL_USERNAME(false,HttpStatus.INTERNAL_SERVER_ERROR.value(),"유저네임 수정 실패"),
 
     PASSWORD_ENCRYPTION_ERROR(false, HttpStatus.INTERNAL_SERVER_ERROR.value(), "비밀번호 암호화에 실패하였습니다."),
-    PASSWORD_DECRYPTION_ERROR(false, HttpStatus.INTERNAL_SERVER_ERROR.value(), "비밀번호 복호화에 실패하였습니다.");
+    PASSWORD_DECRYPTION_ERROR(false, HttpStatus.INTERNAL_SERVER_ERROR.value(), "비밀번호 복호화에 실패하였습니다."),
 
+    // converts
+    VIDEO_UPLOAD_ERROR(false,HttpStatus.INTERNAL_SERVER_ERROR.value(), "영상 업로드에 실패하였습니다."),
+    VIDEO_CONVERT_ERROR(false, HttpStatus.INTERNAL_SERVER_ERROR.value(), "영상 변환에 실패하였습니다.");
 
     private final boolean isSuccess;
     private final int code;
