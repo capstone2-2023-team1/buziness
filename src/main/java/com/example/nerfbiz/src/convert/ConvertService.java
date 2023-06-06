@@ -76,6 +76,7 @@ public class ConvertService {
         ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.GET, requestEntity, String.class);
         if(response.getStatusCode().isError()) throw new BaseException(VIDEO_CONVERT_ERROR);
         String obj_url = response.getBody();
+        System.out.println("obj_url:"+obj_url);
         convertDao.saveObjUrl(objectID, obj_url);
         return obj_url;
     }
