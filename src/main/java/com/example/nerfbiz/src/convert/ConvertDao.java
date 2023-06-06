@@ -21,11 +21,13 @@ public class ConvertDao {
     }
 
     public List<GetVideoRes> getVideos(int userIdx){
-        String getVideosQuery = "select * from object";
+        String getVideosQuery = "select * from object where idx = ?";
+        int getVideosParams = userIdx;
         return this.jdbcTemplate.query(getVideosQuery,
                 (rs, rowNum) -> new GetVideoRes(
                     rs.getString("id"),
-                        rs.getString("video_url"))
+                        rs.getString("video_url")),
+                getVideosParams
         );
     }
 
@@ -43,12 +45,13 @@ public class ConvertDao {
 
 
     public List<GetRenderingRes> getRenderings(int userIdx){
-        String getRederingsQuery = "select objectId, mesh_url from object";
-        return this.jdbcTemplate.query(getRederingsQuery,
+        String getRenderingsQuery = "select id, mesh_url from object where idx = ?";
+        int getRenderingsParams = userIdx;
+        return this.jdbcTemplate.query(getRenderingsQuery,
                 (rs, rowNum)->new GetRenderingRes(
                         rs.getString("id"),
                         rs.getString("obj_url")
-                ));
+                ), getRenderingsParams);
     }
 
 }
