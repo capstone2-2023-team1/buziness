@@ -49,7 +49,7 @@ public class ConvertDao {
     }
 
     public void saveObjUrl(String objectId, String obj_url){
-        String saveObjUrlQuery = "update object set obj_url = ? where id = ?";
+        String saveObjUrlQuery = "update object set mesh_url = ? where id = ?";
         Object[] saveObjUrlParams = new Object[]{obj_url, objectId};
         this.jdbcTemplate.update(saveObjUrlQuery, saveObjUrlParams);
     }
