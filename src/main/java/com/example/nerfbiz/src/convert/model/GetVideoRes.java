@@ -7,9 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class PostConvertRes {
+public class GetVideoRes {
 
-    private String video_url;
-    private String obj_url;
+    String objectId;
+    String video_url;
 
 }

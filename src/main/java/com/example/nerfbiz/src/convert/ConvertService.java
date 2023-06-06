@@ -38,7 +38,7 @@ public class ConvertService {
         this.convertProvider = convertProvider;
     }
 
-    public String uploadVideo(String objectID, MultipartFile multipartFile) throws BaseException {
+    public String uploadVideo(int userIdx, String objectID, MultipartFile multipartFile) throws BaseException {
 
         try {
             //credential 객체 생성
@@ -54,7 +54,9 @@ public class ConvertService {
             BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("video/mp4").build();
             storage.create(blobInfo, content);
 
-            return "https://storage.googleapis.com"+"/"+BUCKET_NAME+"/"+BUCKET_VIDEO_DIR+"/"+objectID;
+            String videoUrl = "https://storage.googleapis.com"+"/"+BUCKET_NAME+"/"+BUCKET_VIDEO_DIR+"/"+objectID;
+            convertDao.createObject(objectID, userIdx, videoUrl);
+            return videoUrl;
 
         }catch (Exception exception){
             throw new BaseException(VIDEO_UPLOAD_ERROR);
@@ -62,7 +64,7 @@ public class ConvertService {
 
     }
 
-    public PostConvertRes convert(String category, String objectID, String videoUrl) throws BaseException {
+    public String convert(String category, String objectID, String videoUrl) throws BaseException {
 
         RestTemplate restTemplate = new RestTemplate();
         String apiUrl = Constant.FUNCTIONAL_SERVER_PATH_VIDEO2TRD + "?video="+videoUrl + "&identifier=" + objectID + "&mask_id="+category;
@@ -70,9 +72,9 @@ public class ConvertService {
         HttpEntity<String> requestEntity = new HttpEntity<>(null, headers);
         ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.GET, requestEntity, String.class);
         if(response.getStatusCode().isError()) throw new BaseException(VIDEO_CONVERT_ERROR);
-        //String responseBody = response.getBody();
-        //resultMap.put("obj_url", Constant.RENDERING_SERVER_PATH + "?url=" + responseBody);
-        return new PostConvertRes();
+        String obj_url = response.getBody();
+        convertDao.saveObjUrl(objectID, obj_url);
+        return obj_url;
     }
 
 }

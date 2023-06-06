@@ -1,9 +1,12 @@
 package com.example.nerfbiz.src.convert;
 
+import com.example.nerfbiz.src.convert.model.GetRenderingRes;
+import com.example.nerfbiz.src.convert.model.GetVideoRes;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @Repository
 public class ConvertDao {
@@ -16,5 +19,31 @@ public class ConvertDao {
         String lastInsertIdQuery = "select last_insert_id() from object";
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
     }
+
+    public List<GetVideoRes> getVideos(int userIdx){
+        String getVideosQuery = "select * from object";
+        return this.jdbcTemplate.query(getVideosQuery,
+                (rs, rowNum) -> new GetVideoRes(
+                    rs.getString("objectId"),
+                        rs.getString("video_url"))
+        );
+    }
+
+    public void createObject(String objectId, int userIdx, String video_url){
+        String createObjectQuery = "insert into object (id, idx, video_url) VALUES (?, ?, ?)";
+        Object[] createObjectParams = new Object[]{objectId, userIdx, video_url};
+        this.jdbcTemplate.update(createObjectQuery, createObjectParams);
+    }
+
+    public void saveObjUrl(String objectId, String obj_url){
+        String saveObjUrlQuery = "update object set obj_url = ? where id = ?";
+        Object[] saveObjUrlParams = new Object[]{objectId, obj_url};
+        this.jdbcTemplate.update(saveObjUrlQuery, saveObjUrlParams);
+    }
+
+//
+//    public List<GetRenderingRes> getRenderings(int userIdx){
+//        String getRederingsQuery = "select objectId, mesh_url from object";
+//    }
 
 }
