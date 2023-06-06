@@ -42,14 +42,17 @@ public class ConvertService {
 
         try {
             //credential 객체 생성
+            System.out.println("credential 객체 생성");
             String credentialsPath = FILE_PATH_RESOURCES + GCS_KEY_JSON;
             GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(credentialsPath));
 
             //storage 객체 생성
+            System.out.println("storage 객체 생성");
             Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
             byte[] content = multipartFile.getBytes();
 
             //cloud에 영상 전송
+            System.out.println("cloud에 영상 전송");
             BlobId blobId = BlobId.of(BUCKET_NAME, BUCKET_VIDEO_DIR+"/"+objectID);
             BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("video/mp4").build();
             storage.create(blobInfo, content);

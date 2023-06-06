@@ -79,6 +79,7 @@ public class ConvertController {
             videoUrl = convertService.uploadVideo(userIdx, objectId, files[0]);
 
         } catch (BaseException exception) {
+            exception.printStackTrace();
             return new BaseResponse(exception.getStatus());
         }
 
@@ -88,6 +89,7 @@ public class ConvertController {
             objUrl = convertService.convert(category, objectId, videoUrl);
 
         } catch (BaseException exception) {
+            exception.printStackTrace();
             return new BaseResponse<>(exception.getStatus());
         }
 
