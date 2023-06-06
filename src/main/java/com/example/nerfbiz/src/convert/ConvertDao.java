@@ -21,7 +21,7 @@ public class ConvertDao {
     }
 
     public List<GetVideoRes> getVideos(int userIdx){
-        String getVideosQuery = "select * from object where idx = ?";
+        String getVideosQuery = "select * from object where user_idx = ?";
         int getVideosParams = userIdx;
         return this.jdbcTemplate.query(getVideosQuery,
                 (rs, rowNum) -> new GetVideoRes(
@@ -29,6 +29,17 @@ public class ConvertDao {
                         rs.getString("video_url")),
                 getVideosParams
         );
+    }
+
+
+    public List<GetRenderingRes> getRenderings(int userIdx){
+        String getRenderingsQuery = "select id, mesh_url from object where user_idx = ?";
+        int getRenderingsParams = userIdx;
+        return this.jdbcTemplate.query(getRenderingsQuery,
+                (rs, rowNum)->new GetRenderingRes(
+                        rs.getString("id"),
+                        rs.getString("mesh_url")
+                ), getRenderingsParams);
     }
 
     public void createObject(String objectId, int userIdx, String video_url){
@@ -44,14 +55,5 @@ public class ConvertDao {
     }
 
 
-    public List<GetRenderingRes> getRenderings(int userIdx){
-        String getRenderingsQuery = "select id, mesh_url from object where idx = ?";
-        int getRenderingsParams = userIdx;
-        return this.jdbcTemplate.query(getRenderingsQuery,
-                (rs, rowNum)->new GetRenderingRes(
-                        rs.getString("id"),
-                        rs.getString("obj_url")
-                ), getRenderingsParams);
-    }
 
 }
