@@ -43,7 +43,7 @@ public class ConvertDao {
     }
 
     public void createObject(String objectId, int userIdx, String video_url){
-        String createObjectQuery = "insert into object (id, idx, video_url) VALUES (?, ?, ?)";
+        String createObjectQuery = "insert into object (id, user_idx, video_url) VALUES (?, ?, ?)";
         Object[] createObjectParams = new Object[]{objectId, userIdx, video_url};
         this.jdbcTemplate.update(createObjectQuery, createObjectParams);
     }
