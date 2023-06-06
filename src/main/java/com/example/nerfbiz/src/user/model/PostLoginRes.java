@@ -1,4 +1,4 @@
-package com.example.nerfbiz.src.convert.model;
+package com.example.nerfbiz.src.user.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,9 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class PostConvertReq {
-
-    private String category;
+public class PostLoginRes {
     private int userIdx;
-
+    private String jwt;
 }

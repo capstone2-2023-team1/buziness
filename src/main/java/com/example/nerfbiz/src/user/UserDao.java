@@ -1,6 +1,8 @@
 package com.example.nerfbiz.src.user;
 
+import com.example.nerfbiz.src.user.model.PostLoginReq;
 import com.example.nerfbiz.src.user.model.PostUserReq;
+import com.example.nerfbiz.src.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -32,5 +34,22 @@ public class UserDao {
         String checkEmailParams = email;
         return this.jdbcTemplate.queryForObject(checkEmailQuery, int.class, checkEmailParams);
     }
+
+    public User getPwd(PostLoginReq postLoginReq){
+        String getPwdQuery = "select idx, password,email,ID from user where ID = ?";
+        String getPwdParams = postLoginReq.getId();
+
+        return this.jdbcTemplate.queryForObject(getPwdQuery,
+                (rs,rowNum)-> new User(
+                        rs.getInt("idx"),
+                        rs.getString("ID"),
+                        rs.getString("password"),
+                        rs.getString("email")
+                ),
+                getPwdParams
+        );
+
+    }
+
 
 }

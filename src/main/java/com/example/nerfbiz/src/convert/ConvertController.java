@@ -53,16 +53,23 @@ public class ConvertController {
     @RequestMapping(value="video", method= RequestMethod.POST)
     public BaseResponse<PostConvertRes> videoUpload (@RequestBody PostConvertReq postConvertReq, @RequestParam(value="file", required=false) MultipartFile[] files) {
 
+            //validation
+            //userIdx 검증
+
+
             String objectId = System.currentTimeMillis()+"";
+            String videoUrl;
+            // gcs 업로드
             try {
                 System.out.println("gcs 업로드");
-                convertService.uploadVideo(objectId, files[0]);
+                videoUrl = convertService.uploadVideo(objectId, files[0]);
             }catch (BaseException exception){
                 return new BaseResponse(exception.getStatus());
             }
+            // NeRF-server에 작업 요청
             try {
                 System.out.println("NeRF-server에 작업 요청");
-                return new BaseResponse<>(convertService.convert(postConvertReq, objectId));
+                return new BaseResponse<>(convertService.convert(postConvertReq.getCategory(), objectId, videoUrl));
             }
             catch (BaseException exception) {
                 return new BaseResponse<>(exception.getStatus());

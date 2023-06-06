@@ -38,7 +38,7 @@ public class ConvertService {
         this.convertProvider = convertProvider;
     }
 
-    public void uploadVideo(String objectID, MultipartFile multipartFile) throws BaseException {
+    public String uploadVideo(String objectID, MultipartFile multipartFile) throws BaseException {
 
         try {
             //credential 객체 생성
@@ -54,6 +54,7 @@ public class ConvertService {
             BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("video/mp4").build();
             storage.create(blobInfo, content);
 
+            return "https://storage.googleapis.com"+"/"+BUCKET_NAME+"/"+BUCKET_VIDEO_DIR+"/"+objectID;
 
         }catch (Exception exception){
             throw new BaseException(VIDEO_UPLOAD_ERROR);
@@ -61,10 +62,10 @@ public class ConvertService {
 
     }
 
-    public PostConvertRes convert(PostConvertReq postConvertReq, String objectID) throws BaseException {
+    public PostConvertRes convert(String category, String objectID, String videoUrl) throws BaseException {
 
         RestTemplate restTemplate = new RestTemplate();
-        String apiUrl = Constant.FUNCTIONAL_SERVER_PATH_VIDEO2TRD + "?video=https://storage.googleapis.com/nerf-video/videos/" + objectID + "&identifier=" + objectID + "&mask_id="+postConvertReq.getCategory();
+        String apiUrl = Constant.FUNCTIONAL_SERVER_PATH_VIDEO2TRD + "?video="+videoUrl + "&identifier=" + objectID + "&mask_id="+category;
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<String> requestEntity = new HttpEntity<>(null, headers);
         ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.GET, requestEntity, String.class);
