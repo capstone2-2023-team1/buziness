@@ -93,7 +93,7 @@ public class ConvertController {
             return new BaseResponse<>(exception.getStatus());
         }
 
-        return new BaseResponse<>(new PostConvertRes(videoUrl, objUrl));
+        return new BaseResponse<>(new PostConvertRes(videoUrl, Constant.RENDERING_SERVER_PATH+"?url="+objUrl));
 
     }
 
