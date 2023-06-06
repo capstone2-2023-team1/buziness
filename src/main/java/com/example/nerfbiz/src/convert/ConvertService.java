@@ -2,9 +2,6 @@ package com.example.nerfbiz.src.convert;
 
 import com.example.nerfbiz.config.BaseException;
 import com.example.nerfbiz.config.Constant;
-import com.example.nerfbiz.src.convert.model.PostConvertReq;
-import com.example.nerfbiz.src.convert.model.PostConvertRes;
-import com.example.nerfbiz.src.convert.model.Target;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
@@ -73,6 +70,7 @@ public class ConvertService {
         String apiUrl = Constant.FUNCTIONAL_SERVER_PATH_VIDEO2TRD + "?video="+videoUrl + "&identifier=" + objectID + "&mask_id="+category;
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<String> requestEntity = new HttpEntity<>(null, headers);
+        System.out.println("요청 보냄");
         ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.GET, requestEntity, String.class);
         if(response.getStatusCode().isError()) throw new BaseException(VIDEO_CONVERT_ERROR);
         String obj_url = response.getBody();
