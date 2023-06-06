@@ -24,7 +24,7 @@ public class ConvertDao {
         String getVideosQuery = "select * from object";
         return this.jdbcTemplate.query(getVideosQuery,
                 (rs, rowNum) -> new GetVideoRes(
-                    rs.getString("objectId"),
+                    rs.getString("id"),
                         rs.getString("video_url"))
         );
     }
