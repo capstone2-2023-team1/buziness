@@ -50,16 +50,15 @@ public class ConvertController {
     }
 
     /**
-     * 변환 요청 API
-     * [POST] /video
      *
-     * @param postConvertReq
+     * @param userIdx
+     * @param category
      * @param files
      * @return
      */
 
     @RequestMapping(value = "video", method = RequestMethod.POST)
-    public BaseResponse<PostConvertRes> videoUpload(@RequestParam int userIdx, @RequestParam String category, @RequestParam(value = "file", required = false) MultipartFile[] files) {
+    public BaseResponse<PostConvertRes> videoUpload(@RequestParam("userIdx") int userIdx, @RequestParam("category") String category, @RequestParam(value = "file", required = false) MultipartFile[] files) {
 
         //validation
         //userIdx 검증
