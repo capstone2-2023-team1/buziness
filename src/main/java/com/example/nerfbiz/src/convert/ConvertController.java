@@ -38,15 +38,16 @@ public class ConvertController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
-//
-//    @RequestMapping(value = "rendering/{userIdx}", method = RequestMethod.GET)
-//    public BaseResponse<List<GetRenderingRes>> getRenderings(@PathVariable("userIdx") int userIdx){
-//        try{
-//
-//        }catch (BaseException exception){
-//
-//        }
-//    }
+
+    @RequestMapping(value = "rendering/{userIdx}", method = RequestMethod.GET)
+    public BaseResponse<List<GetRenderingRes>> getRenderings(@PathVariable("userIdx") int userIdx){
+        try{
+            List<GetRenderingRes> getRenderingRes = convertProvider.getRenderings(userIdx);
+            return new BaseResponse<>(getRenderingRes);
+        }catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 
     /**
      * 변환 요청 API

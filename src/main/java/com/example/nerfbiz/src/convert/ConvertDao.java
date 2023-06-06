@@ -41,9 +41,14 @@ public class ConvertDao {
         this.jdbcTemplate.update(saveObjUrlQuery, saveObjUrlParams);
     }
 
-//
-//    public List<GetRenderingRes> getRenderings(int userIdx){
-//        String getRederingsQuery = "select objectId, mesh_url from object";
-//    }
+
+    public List<GetRenderingRes> getRenderings(int userIdx){
+        String getRederingsQuery = "select objectId, mesh_url from object";
+        return this.jdbcTemplate.query(getRederingsQuery,
+                (rs, rowNum)->new GetRenderingRes(
+                        rs.getString("id"),
+                        rs.getString("obj_url")
+                ));
+    }
 
 }

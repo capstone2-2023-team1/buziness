@@ -9,7 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class GetVideoRes {
 
-    String objectId;
-    String video_url;
+    private String objectId;
+    private String video_url;
 
 }

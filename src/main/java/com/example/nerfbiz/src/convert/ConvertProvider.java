@@ -32,10 +32,12 @@ public class ConvertProvider {
             throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
         }
     }
-//
-//    public List<GetRenderingRes> getRenderings(int userIdx) throws BaseException{
-//        try{
-//
-//        }
-//    }
+
+    public List<GetRenderingRes> getRenderings(int userIdx) throws BaseException{
+        try{
+            return convertDao.getRenderings(userIdx);
+        }catch (Exception exception){
+            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+        }
+    }
 }
