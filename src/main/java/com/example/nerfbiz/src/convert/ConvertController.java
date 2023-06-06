@@ -59,18 +59,17 @@ public class ConvertController {
      */
 
     @RequestMapping(value = "video", method = RequestMethod.POST)
-    public BaseResponse<PostConvertRes> videoUpload(@RequestBody PostConvertReq postConvertReq, @RequestParam(value = "file", required = false) MultipartFile[] files) {
+    public BaseResponse<PostConvertRes> videoUpload(@RequestParam int userIdx, @RequestParam String category, @RequestParam(value = "file", required = false) MultipartFile[] files) {
 
         //validation
         //userIdx 검증
-        int userIdx = postConvertReq.getUserIdx();
 
-        try {
-            int userIdxByJwt = jwtService.getUserIdx();
-            if(userIdx != userIdxByJwt) return new BaseResponse<>(INVALID_USER_JWT);
-        }catch (BaseException exception){
-            return new BaseResponse<>(exception.getStatus());
-        }
+//        try {
+//            //int userIdxByJwt = jwtService.getUserIdx();
+//            //if(userIdx != userIdxByJwt) return new BaseResponse<>(INVALID_USER_JWT);
+//        }catch (BaseException exception){
+//            return new BaseResponse<>(exception.getStatus());
+//        }
         String objectId = System.currentTimeMillis() + "";
         String videoUrl;
         String objUrl;
@@ -87,7 +86,7 @@ public class ConvertController {
         // NeRF-server에 작업 요청
         try {
             System.out.println("NeRF-server에 작업 요청");
-            objUrl = convertService.convert(postConvertReq.getCategory(), objectId, videoUrl);
+            objUrl = convertService.convert(category, objectId, videoUrl);
 
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
