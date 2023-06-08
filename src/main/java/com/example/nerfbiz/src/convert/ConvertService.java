@@ -7,6 +7,7 @@ import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
+import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 
 import static com.example.nerfbiz.config.BaseResponseStatus.*;
 import static com.example.nerfbiz.config.Constant.*;
@@ -77,6 +79,24 @@ public class ConvertService {
         System.out.println("obj_url:"+obj_url);
         convertDao.saveObjUrl(objectID, obj_url);
         return obj_url;
+    }
+
+
+    public double getVideoDuration(MultipartFile videoFile) {
+        try {
+            FFmpegFrameGrabber frameGrabber = new FFmpegFrameGrabber(videoFile.getInputStream());
+            frameGrabber.start();
+
+            double durationInSeconds = frameGrabber.getLengthInTime() / 1000000.0;
+
+            frameGrabber.stop();
+            frameGrabber.release();
+
+            return durationInSeconds;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return -1.0;
+        }
     }
 
 }

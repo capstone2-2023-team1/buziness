@@ -5,9 +5,13 @@ import com.example.nerfbiz.config.BaseResponse;
 import com.example.nerfbiz.config.Constant;
 import com.example.nerfbiz.src.convert.model.*;
 import com.example.nerfbiz.utils.JwtService;
+import org.bytedeco.javacv.FFmpegFrameGrabber;
+import org.bytedeco.javacv.FrameGrabber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 
 import static com.example.nerfbiz.config.BaseResponseStatus.INVALID_USER_JWT;
@@ -69,6 +73,15 @@ public class ConvertController {
 //        }catch (BaseException exception){
 //            return new BaseResponse<>(exception.getStatus());
 //        }
+
+        double duration = convertService.getVideoDuration(files[0]);
+
+        if (duration >= 0) {
+            System.out.println("동영상의 길이: " + duration + "초");
+        } else {
+            System.out.println("동영상의 길이를 가져올 수 없습니다.");
+        }
+
         String objectId = System.currentTimeMillis() + "";
         String videoUrl;
         String objUrl;
@@ -96,5 +109,6 @@ public class ConvertController {
         return new BaseResponse<>(new PostConvertRes(videoUrl, Constant.RENDERING_SERVER_PATH+"?url="+objUrl));
 
     }
+
 
 }
