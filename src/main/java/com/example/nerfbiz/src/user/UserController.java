@@ -2,6 +2,7 @@ package com.example.nerfbiz.src.user;
 
 import com.example.nerfbiz.config.BaseException;
 import com.example.nerfbiz.config.BaseResponse;
+import com.example.nerfbiz.config.Constant;
 import com.example.nerfbiz.src.user.model.PostLoginReq;
 import com.example.nerfbiz.src.user.model.PostLoginRes;
 import com.example.nerfbiz.src.user.model.PostUserReq;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static com.example.nerfbiz.config.BaseResponseStatus.POST_USERS_EMPTY_EMAIL;
 
+@CrossOrigin(origins = Constant.FRONT_SERVER_PATH)
 @RestController
 @RequestMapping("/app/users")
 public class UserController {
